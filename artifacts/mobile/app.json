@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "LaughRoyale",
+    "slug": "mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "mobile",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0D0B1E"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "LaughRoyale uses the microphone to measure laughter intensity during gameplay."
+      }
+    },
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://replit.com/"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "LaughRoyale uses the microphone to measure laughter intensity during gameplay."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

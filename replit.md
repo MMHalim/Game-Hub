@@ -1,36 +1,52 @@
-# [Project name]
+# LaughRoyale
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A real-time multiplayer party game where players compete to make each other laugh using celebrity quotes. Laughter intensity is measured through the microphone.
 
 ## Run & Operate
 
+- `pnpm --filter @workspace/mobile run dev` — run the Expo mobile app
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `DATABASE_URL` — Postgres connection string (if using DB features)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Mobile: Expo SDK 54, React Native, Expo Router
+- Backend: Express 5 (api-server artifact)
+- DB: PostgreSQL + Drizzle ORM (not yet connected to game — game state uses AsyncStorage)
+- Validation: Zod
+- Audio: expo-av (microphone laughter detection)
+- Storage: @react-native-async-storage/async-storage
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/mobile/` — Expo mobile app
+- `artifacts/mobile/app/` — Expo Router screens (file-based routing)
+- `artifacts/mobile/context/` — AuthContext, GameContext, SubscriptionContext
+- `artifacts/mobile/data/celebrities.ts` — Celebrity database with quotes
+- `artifacts/mobile/hooks/useAudioLevel.ts` — Microphone audio level hook
+- `artifacts/mobile/components/` — TimerRing, AudioMeter, PlayerCard
+- `artifacts/api-server/` — Express API server
+- `lib/api-spec/openapi.yaml` — API spec
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Game state stored in AsyncStorage (no backend required for gameplay — all local)
+- Auth is local (AsyncStorage) — no Supabase/Firebase in current build
+- Microphone uses expo-av with fallback to simulation on web/permission denied
+- Subscription is mocked (UI complete, RevenueCat integration is next step)
+- Dark-first design with purple/gold party game palette
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Players create or join a game session with a 6-character code
+- Each player is assigned an Egyptian or international celebrity with quotes
+- Turn-based gameplay: 60s per turn, read quotes in celebrity's voice to make others laugh
+- Microphone measures laughter intensity in real-time
+- Score = average audio level during turn
+- Results screen shows winner with animated podium
+- 3-day free trial, then subscription ($15/wk, $39/mo, $199/yr)
 
 ## User preferences
 
@@ -38,8 +54,12 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- expo-av version: installed 15.0.2 but Expo SDK 54 expects ~16.0.8 — upgrade when testing on device
+- expo-secure-store version: installed 14.0.1, expected ~15.0.8 — same
+- Audio simulation used on web and when mic permission is denied
+- Game runs on a single device passed between players in same room
 
 ## Pointers
 
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Celebrity quotes are in `artifacts/mobile/data/celebrities.ts`

@@ -1,0 +1,195 @@
+Build a full-stack cross-platform multiplayer mobile game using:
+
+Frontend: Flutter (Dart)
+Backend: Supabase (Auth, Database, Realtime, Storage)
+Monetization: Subscription + Ads integration
+🎮 Game Concept
+
+This is a real-time multiplayer party game where players compete to make others laugh.
+
+Core Gameplay:
+Users create or join a game session
+Each session has N players (example: 5 players)
+Each player enters a 1-minute turn
+During their turn:
+They must use quotes from a selected celebrity (actor, comedian, singer — Egyptian + international)
+The goal is to make others laugh
+App measures laughter intensity using microphone input (sound level detection)
+Highest laughter score wins the match
+🧩 Game Flow
+1. Authentication
+Email/password login
+Facebook login (Meta SDK)
+Instagram login (Meta OAuth if possible)
+2. Home Screen
+Create session
+Join session
+3. Create Session
+Input player names
+Select celebrity per player
+Generate session ID
+4. Gameplay Screen
+Turn-based timer system
+Real-time microphone audio processing
+Live score tracking
+Player rotation system
+5. Results Screen
+Winner announcement
+Score breakdown per player
+🧠 Backend (Supabase)
+
+Use Supabase for:
+
+Tables:
+users
+profiles
+sessions
+players
+turns
+scores
+celebrities
+subscriptions
+Features:
+Realtime updates for game sessions
+Row Level Security (RLS)
+Session state synchronization
+Score updates per turn
+💳 Subscription System
+Free trial: 3 days
+After trial:
+Weekly: $15
+Monthly: $39
+Yearly: $199
+
+Restrict gameplay after trial ends unless subscribed.
+
+📢 Ads System
+Integrate Google Ads (AdMob)
+Show ads ONLY during free trial period
+Disable ads after subscription activation
+🎯 Key Technical Requirements
+Real-time multiplayer sync (Supabase Realtime)
+Microphone-based sound intensity detection for laughter scoring
+Clean architecture (separate UI / logic / services)
+Scalable session system
+Smooth animations for turns and transitions
+Mobile-first UI/UX design
+📦 Output Requirements
+
+Generate:
+
+Full Flutter project
+Supabase schema + SQL migrations
+Authentication integration
+Real-time multiplayer logic
+Basic UI screens
+Audio processing module for laughter detection
+Subscription + ad placeholder integration
+2) System Architecture Diagram
+
+Here’s a clean architecture layout:
+
+                ┌────────────────────────────┐
+                │        Flutter App         │
+                │ (Android + iOS Frontend)   │
+                └────────────┬───────────────┘
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+        ▼                    ▼                    ▼
+┌──────────────┐   ┌──────────────────┐  ┌──────────────────┐
+│ Supabase Auth│   │ Supabase Realtime│  │ Google AdMob     │
+│ Login System  │   │ Game Sync       │  │ (Free Trial Ads) │
+└──────────────┘   └──────────────────┘  └──────────────────┘
+        │                    │
+        ▼                    ▼
+┌────────────────────────────────────────────┐
+│              Supabase Backend              │
+│--------------------------------------------│
+│ Tables:                                    │
+│ - users                                    │
+│ - sessions                                 │
+│ - players                                  │
+│ - turns                                   │
+│ - scores                                  │
+│ - celebrities                             │
+│ - subscriptions                           │
+└────────────────────────────────────────────┘
+                             │
+                             ▼
+              ┌──────────────────────────┐
+              │ Microphone Audio Engine  │
+              │ (Laughter Detection)     │
+              │ - decibel analysis       │
+              │ - peak detection         │
+              └──────────────────────────┘
+3) Flutter Project Folder Structure
+
+Here’s a scalable production structure:
+
+lib/
+│
+├── main.dart
+│
+├── app/
+│   ├── app.dart
+│   ├── router.dart
+│   └── theme.dart
+│
+├── core/
+│   ├── constants/
+│   ├── utils/
+│   ├── services/
+│   │   ├── supabase_service.dart
+│   │   ├── auth_service.dart
+│   │   ├── audio_service.dart
+│   │   ├── ads_service.dart
+│   │   └── subscription_service.dart
+│   └── helpers/
+│
+├── features/
+│   ├── auth/
+│   │   ├── login_screen.dart
+│   │   ├── register_screen.dart
+│   │   └── auth_controller.dart
+│   │
+│   ├── home/
+│   │   ├── home_screen.dart
+│   │   └── home_controller.dart
+│   │
+│   ├── session/
+│   │   ├── create_session_screen.dart
+│   │   ├── join_session_screen.dart
+│   │   ├── session_screen.dart
+│   │   └── session_controller.dart
+│   │
+│   ├── gameplay/
+│   │   ├── game_screen.dart
+│   │   ├── turn_widget.dart
+│   │   ├── score_board.dart
+│   │   └── game_controller.dart
+│   │
+│   ├── results/
+│   │   ├── results_screen.dart
+│   │   └── results_controller.dart
+│   │
+│   ├── celebrities/
+│   │   ├── celebrity_model.dart
+│   │   ├── celebrity_repository.dart
+│   │   └── celebrity_selector.dart
+│   │
+│   └── subscription/
+│       ├── subscription_screen.dart
+│       └── subscription_controller.dart
+│
+├── models/
+│   ├── user_model.dart
+│   ├── session_model.dart
+│   ├── player_model.dart
+│   ├── score_model.dart
+│   └── turn_model.dart
+│
+└── shared/
+    ├── widgets/
+    ├── dialogs/
+    └── animations/

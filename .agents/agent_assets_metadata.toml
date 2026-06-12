@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "B5CsmEtnIh8SrwbFzsrXs"
+uri = "file://artifacts/mobile/assets/images/icon.png"
+type = "image"
+title = "laugh royale app icon"
+
+[[generated]]
+id = "hegzI3lFFb9kbreCT4y08"
+uri = "file://artifacts/mobile/assets/images/splash.png"
+type = "image"
+title = "laugh royale splash"
