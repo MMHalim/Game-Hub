@@ -80,6 +80,7 @@ export default function LoginScreen() {
             { paddingTop: insets.top + (Platform.OS === "web" ? 67 : 40), paddingBottom: insets.bottom + 40 },
           ]}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
           <View style={styles.logo}>
             <View style={[styles.crownWrap, { backgroundColor: colors.primary + "33" }]}>
@@ -293,12 +294,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
-    paddingHorizontal: 14,
+    paddingLeft: 14,
+    paddingRight: 10,
     paddingVertical: 12,
     gap: 10,
   },
   input: {
     flex: 1,
+    minWidth: 0,
     fontSize: 15,
     fontFamily: "Inter_400Regular",
   },
