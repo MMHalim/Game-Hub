@@ -1,0 +1,1 @@
+- [Theme system](theme-system.md) — ThemeContext (system/light/dark in AsyncStorage), useColors reads from it, gradientBg/gradientBg2 tokens added to colors.ts

@@ -56,47 +56,42 @@ export default function SubscriptionScreen() {
   };
 
   return (
-    <LinearGradient colors={["#0D0B1E", "#1A0F3C", "#0D0B1E"]} style={styles.gradient}>
+    <LinearGradient colors={colors.gradientBg} style={styles.gradient}>
       <ScrollView
-        contentContainerStyle={[
-          styles.scroll,
-          {
-            paddingTop: insets.top + (Platform.OS === "web" ? 67 : 24),
-            paddingBottom: insets.bottom + (Platform.OS === "web" ? 34 : 40),
-          },
-        ]}
+        contentContainerStyle={[styles.scroll, {
+          paddingTop: insets.top + (Platform.OS === "web" ? 67 : 24),
+          paddingBottom: insets.bottom + (Platform.OS === "web" ? 34 : 40),
+        }]}
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()}>
-            <Feather name="x" size={22} color="#9B99B8" />
+            <Feather name="x" size={22} color={colors.mutedForeground} />
           </Pressable>
         </View>
 
         {/* Header */}
         <View style={styles.header}>
-          <LinearGradient
-            colors={["#F59E0B", "#D97706"]}
-            style={styles.crownCircle}
-          >
+          <LinearGradient colors={["#F59E0B", "#D97706"]} style={styles.crownCircle}>
             <Feather name="award" size={36} color="#fff" />
           </LinearGradient>
-          <Text style={styles.title}>LaughRoyale Pro</Text>
+          <Text style={[styles.title, { color: colors.foreground }]}>LaughRoyale Pro</Text>
           {isTrialActive ? (
-            <View style={[styles.trialBadge, { backgroundColor: "#10B98122", borderColor: "#10B98144" }]}>
-              <Feather name="clock" size={13} color="#10B981" />
-              <Text style={[styles.trialBadgeText, { color: "#10B981" }]}>
+            <View style={[styles.trialBadge, { backgroundColor: colors.success + "22", borderColor: colors.success + "44" }]}>
+              <Feather name="clock" size={13} color={colors.success} />
+              <Text style={[styles.trialBadgeText, { color: colors.success }]}>
                 {trialDaysLeft} day{trialDaysLeft !== 1 ? "s" : ""} left in free trial
               </Text>
             </View>
           ) : !isSubscribed ? (
-            <View style={[styles.trialBadge, { backgroundColor: "#EF444422", borderColor: "#EF444444" }]}>
-              <Feather name="lock" size={13} color="#EF4444" />
-              <Text style={[styles.trialBadgeText, { color: "#EF4444" }]}>Trial expired</Text>
+            <View style={[styles.trialBadge, { backgroundColor: colors.destructive + "22", borderColor: colors.destructive + "44" }]}>
+              <Feather name="lock" size={13} color={colors.destructive} />
+              <Text style={[styles.trialBadgeText, { color: colors.destructive }]}>Trial expired</Text>
             </View>
           ) : (
-            <View style={[styles.trialBadge, { backgroundColor: "#10B98122", borderColor: "#10B98144" }]}>
-              <Feather name="check-circle" size={13} color="#10B981" />
-              <Text style={[styles.trialBadgeText, { color: "#10B981" }]}>
+            <View style={[styles.trialBadge, { backgroundColor: colors.success + "22", borderColor: colors.success + "44" }]}>
+              <Feather name="check-circle" size={13} color={colors.success} />
+              <Text style={[styles.trialBadgeText, { color: colors.success }]}>
                 {currentPlan?.charAt(0).toUpperCase()}{currentPlan?.slice(1)} plan active
               </Text>
             </View>
@@ -104,52 +99,46 @@ export default function SubscriptionScreen() {
         </View>
 
         {/* Features */}
-        <View style={[styles.featuresCard, { backgroundColor: "#1A1635", borderColor: "#2D2A4A" }]}>
+        <View style={[styles.featuresCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
           {FEATURES.map((f) => (
             <View key={f} style={styles.featureRow}>
-              <View style={[styles.checkCircle, { backgroundColor: "#7C3AED22" }]}>
-                <Feather name="check" size={12} color="#7C3AED" />
+              <View style={[styles.checkCircle, { backgroundColor: colors.primary + "22" }]}>
+                <Feather name="check" size={12} color={colors.primary} />
               </View>
-              <Text style={styles.featureText}>{f}</Text>
+              <Text style={[styles.featureText, { color: colors.foreground }]}>{f}</Text>
             </View>
           ))}
         </View>
 
         {/* Plan Selector */}
-        <Text style={styles.plansTitle}>Choose Your Plan</Text>
+        <Text style={[styles.plansTitle, { color: colors.foreground }]}>Choose Your Plan</Text>
         {PLANS.map((plan) => (
           <Pressable
             key={plan.id}
-            style={[
-              styles.planCard,
-              {
-                backgroundColor: selected === plan.id ? "#7C3AED22" : "#1A1635",
-                borderColor: selected === plan.id ? "#7C3AED" : "#2D2A4A",
-                borderWidth: selected === plan.id ? 2 : 1,
-              },
-            ]}
-            onPress={() => {
-              setSelected(plan.id);
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
+            style={[styles.planCard, {
+              backgroundColor: selected === plan.id ? colors.primary + "22" : colors.card,
+              borderColor: selected === plan.id ? colors.primary : colors.border,
+              borderWidth: selected === plan.id ? 2 : 1,
+            }]}
+            onPress={() => { setSelected(plan.id); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
           >
             {plan.popular && (
-              <View style={[styles.popularBadge, { backgroundColor: "#F59E0B" }]}>
+              <View style={[styles.popularBadge, { backgroundColor: colors.gold }]}>
                 <Text style={styles.popularText}>BEST VALUE</Text>
               </View>
             )}
             <View style={styles.planLeft}>
-              <View style={[styles.radio, { borderColor: selected === plan.id ? "#7C3AED" : "#3D3A6A" }]}>
-                {selected === plan.id && <View style={[styles.radioDot, { backgroundColor: "#7C3AED" }]} />}
+              <View style={[styles.radio, { borderColor: selected === plan.id ? colors.primary : colors.border }]}>
+                {selected === plan.id && <View style={[styles.radioDot, { backgroundColor: colors.primary }]} />}
               </View>
               <View>
-                <Text style={styles.planTitle}>{plan.title}</Text>
-                <Text style={[styles.planPerMonth, { color: "#9B99B8" }]}>{plan.perMonth}</Text>
+                <Text style={[styles.planTitle, { color: colors.foreground }]}>{plan.title}</Text>
+                <Text style={[styles.planPerMonth, { color: colors.mutedForeground }]}>{plan.perMonth}</Text>
               </View>
             </View>
             <View style={styles.planRight}>
-              <Text style={styles.planPrice}>{plan.price}</Text>
-              <Text style={[styles.planPeriod, { color: "#9B99B8" }]}>{plan.period}</Text>
+              <Text style={[styles.planPrice, { color: colors.foreground }]}>{plan.price}</Text>
+              <Text style={[styles.planPeriod, { color: colors.mutedForeground }]}>{plan.period}</Text>
             </View>
           </Pressable>
         ))}
@@ -162,7 +151,7 @@ export default function SubscriptionScreen() {
             disabled={loading}
           >
             <LinearGradient
-              colors={["#7C3AED", "#4C1D95"]}
+              colors={[colors.primary, "#4C1D95"]}
               style={styles.subBtnGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -173,9 +162,7 @@ export default function SubscriptionScreen() {
                 <>
                   <Feather name="unlock" size={18} color="#fff" />
                   <Text style={styles.subBtnText}>
-                    Subscribe {PLANS.find((p) => p.id === selected)?.price}
-                    {" / "}
-                    {selected}
+                    Subscribe {PLANS.find((p) => p.id === selected)?.price}{" / "}{selected}
                   </Text>
                 </>
               )}
@@ -183,7 +170,7 @@ export default function SubscriptionScreen() {
           </Pressable>
         )}
 
-        <Text style={[styles.disclaimer, { color: "#6B6880" }]}>
+        <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
           Cancel anytime. Subscription renews automatically unless cancelled.
           This is a demo implementation — no real payment is processed.
         </Text>
@@ -198,24 +185,24 @@ const styles = StyleSheet.create({
   topRow: { alignItems: "flex-end" },
   header: { alignItems: "center", gap: 10, paddingVertical: 8 },
   crownCircle: { width: 80, height: 80, borderRadius: 40, alignItems: "center", justifyContent: "center" },
-  title: { fontSize: 28, fontWeight: "800", color: "#F8F7FF", fontFamily: "Inter_700Bold" },
+  title: { fontSize: 28, fontWeight: "800", fontFamily: "Inter_700Bold" },
   trialBadge: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, borderWidth: 1 },
   trialBadgeText: { fontSize: 13, fontFamily: "Inter_500Medium" },
   featuresCard: { borderRadius: 18, borderWidth: 1, padding: 18, gap: 12 },
   featureRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   checkCircle: { width: 26, height: 26, borderRadius: 13, alignItems: "center", justifyContent: "center" },
-  featureText: { fontSize: 14, color: "#F8F7FF", fontFamily: "Inter_400Regular" },
-  plansTitle: { fontSize: 15, fontWeight: "700", color: "#F8F7FF", fontFamily: "Inter_700Bold" },
+  featureText: { fontSize: 14, fontFamily: "Inter_400Regular" },
+  plansTitle: { fontSize: 15, fontWeight: "700", fontFamily: "Inter_700Bold" },
   planCard: { borderRadius: 16, padding: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", position: "relative", overflow: "hidden" },
   popularBadge: { position: "absolute", top: 0, right: 0, paddingHorizontal: 10, paddingVertical: 4, borderBottomLeftRadius: 10 },
   popularText: { fontSize: 10, fontWeight: "700", color: "#000", fontFamily: "Inter_700Bold" },
   planLeft: { flexDirection: "row", alignItems: "center", gap: 14 },
   radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, alignItems: "center", justifyContent: "center" },
   radioDot: { width: 10, height: 10, borderRadius: 5 },
-  planTitle: { fontSize: 16, fontWeight: "600", color: "#F8F7FF", fontFamily: "Inter_600SemiBold" },
+  planTitle: { fontSize: 16, fontWeight: "600", fontFamily: "Inter_600SemiBold" },
   planPerMonth: { fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
   planRight: { alignItems: "flex-end" },
-  planPrice: { fontSize: 20, fontWeight: "800", color: "#F8F7FF", fontFamily: "Inter_700Bold" },
+  planPrice: { fontSize: 20, fontWeight: "800", fontFamily: "Inter_700Bold" },
   planPeriod: { fontSize: 11, fontFamily: "Inter_400Regular" },
   subBtn: { borderRadius: 16, overflow: "hidden" },
   subBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", height: 56, gap: 10 },

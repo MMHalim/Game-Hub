@@ -18,10 +18,22 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 import { GameProvider } from "@/context/GameContext";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
+import colors from "@/constants/colors";
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
+
+function ThemeSync() {
+  const { resolved } = useTheme();
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(
+      resolved === "dark" ? colors.dark.background : colors.light.background
+    );
+  }, [resolved]);
+  return null;
+}
 
 function RootLayoutNav() {
   return (
@@ -37,10 +49,7 @@ function RootLayoutNav() {
         name="join-session"
         options={{ presentation: "card", headerShown: false }}
       />
-      <Stack.Screen
-        name="lobby/[id]"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="lobby/[id]" options={{ headerShown: false }} />
       <Stack.Screen
         name="game/[id]"
         options={{ headerShown: false, gestureEnabled: false }}
@@ -66,10 +75,6 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    SystemUI.setBackgroundColorAsync("#0D0B1E");
-  }, []);
-
-  useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
@@ -78,22 +83,25 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) return null;
 
   return (
-    <SafeAreaProvider>
-      <ErrorBoundary>
-        <QueryClientProvider client={queryClient}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <KeyboardProvider>
-              <AuthProvider>
-                <GameProvider>
-                  <SubscriptionProvider>
-                    <RootLayoutNav />
-                  </SubscriptionProvider>
-                </GameProvider>
-              </AuthProvider>
-            </KeyboardProvider>
-          </GestureHandlerRootView>
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </SafeAreaProvider>
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <ErrorBoundary>
+          <QueryClientProvider client={queryClient}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <KeyboardProvider>
+                <AuthProvider>
+                  <GameProvider>
+                    <SubscriptionProvider>
+                      <ThemeSync />
+                      <RootLayoutNav />
+                    </SubscriptionProvider>
+                  </GameProvider>
+                </AuthProvider>
+              </KeyboardProvider>
+            </GestureHandlerRootView>
+          </QueryClientProvider>
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
 }
